@@ -135,7 +135,7 @@ img {
 }
 
 .hero-image img {
-    width: 300px;
+    width: 375px;
     aspect-ratio: 1 / 1;
 
     object-fit: cover;
@@ -149,4 +149,30 @@ img {
 .hero-image img:hover {
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(46, 230, 166, 0.2);
+}
+
+.hero-scroll {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    font-size: 0.8rem;
+    color: var(--color-subtext);
+
+    animation: scroll-move 1.6s ease-in-out infinite;
+}
+
+@keyframes scroll-move {
+    0% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%, 6px);
+    }
+
+    100% {
+        transform: translateX(-50%, 0);
+    }
 }
