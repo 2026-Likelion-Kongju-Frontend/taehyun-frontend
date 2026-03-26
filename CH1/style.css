@@ -34,7 +34,8 @@ section {
 }
 
 .hero,
-.about {
+.about,
+.timeline {
     min-height: 100vh;
 }
 
@@ -231,4 +232,35 @@ img {
 
 .about-content p:last-child {
     margin-bottom: 0;
+}
+
+/* ================ Timeline Section =============== */
+
+/* timeline 전체 */
+.timeline {
+    height: 300vh;
+    /* 임시 (카드 개수 따라 바뀜) */
+}
+
+/* 화면 고정 */
+.timeline-sticky {
+    position: sticky;
+    top: 0;
+
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* 가로 트랙 */
+.timeline-track {
+    display: flex;
+    gap: 40px;
+    padding: 0 32px;
+}
+
+.project-card {
+    min-width: 80vw;
 }
