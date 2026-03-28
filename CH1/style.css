@@ -176,15 +176,15 @@ img {
 
 @keyframes scroll-move {
     0% {
-        transform: translate(-50%) translateY(0);
+        transform: translateX(-50%) translateY(0);
     }
 
     50% {
-        transform: translate(-50%, 6px);
+        transform: translateX(-50%) translateY(6px);
     }
 
     100% {
-        transform: translate(-50%, 0);
+        transform: translateX(-50%) translateY(0);
     }
 }
 
@@ -236,17 +236,13 @@ img {
 
 /* ================ Timeline Section =============== */
 
-/* timeline 전체 */
 .timeline {
     height: 300vh;
-    /* 임시 (카드 개수 따라 바뀜) */
 }
 
-/* 화면 고정 */
 .timeline-sticky {
     position: sticky;
     top: 0;
-
     height: 100vh;
 
     display: flex;
@@ -254,22 +250,193 @@ img {
     overflow: hidden;
 }
 
-/* 가로 트랙 */
 .timeline-track {
     display: flex;
-    gap: 40px;
+    gap: 24px;
     padding: 0 32px;
     will-change: transform;
 }
 
 .project-card {
-    min-width: 100vw;
-    height: 60vh;
-    border: 1px solid #2a2a2a;
-    border-radius: 16px;
+    min-width: calc(100vw - 64px);
+    max-width: 900px;
+    min-height: 72vh;
+
+    padding: 48px;
+    border: 1px solid #1f1f1f;
+    border-radius: 20px;
     background-color: #111111;
+
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    font-size: 2rem;
+}
+
+.project-card>* {
+    margin-bottom: 20px;
+}
+
+.project-card>*:last-child {
+    margin-bottom: 0;
+}
+
+/* project header */
+.project-header {
+    margin-bottom: 4px;
+}
+
+.project-date {
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    color: var(--color-primary);
+}
+
+.project-title {
+    margin-bottom: 6px;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.project-role {
+    font-size: 0.9rem;
+    color: var(--color-subtext);
+}
+
+/* summary */
+.project-summary {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--color-text);
+}
+
+/* stack badges */
+.project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.stack-badge {
+    padding: 6px 12px;
+    border-radius: 999px;
+
+    font-size: 0.8rem;
+    color: var(--color-text);
+
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+
+    transition: all 0.2s ease;
+}
+
+.stack-badge:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+/* description */
+.project-description p {
+    margin-bottom: 16px;
+
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--color-subtext);
+}
+
+.project-description p:last-child {
+    margin-bottom: 0;
+}
+
+/* points */
+.project-points h4 {
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.project-points ul {
+    padding-left: 18px;
+}
+
+.project-points li {
+    margin-bottom: 8px;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--color-subtext);
+}
+
+.project-points li:last-child {
+    margin-bottom: 0;
+}
+
+/* links */
+.project-links a {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-primary);
+}
+
+.project-links a:hover {
+    text-decoration: underline;
+}
+
+/* ================ ACTIVE PROJECT CARD =============== */
+
+.project-card {
+    opacity: 0.35;
+    transform: scale(0.96);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.project-card.is-active {
+    opacity: 1;
+    transform: scale(1);
+
+    border-color: #1f1f1f;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ================ PLAYER BAR =============== */
+
+#player-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+
+    width: min(720px, calc(100% - 48px));
+}
+
+.player-bar-track {
+    width: 100%;
+    height: 4px;
+
+    background-color: #1f1f1f;
+    border-radius: 999px;
+    overflow: visible;
+}
+
+.player-bar-progress {
+    position: relative;
+    width: 0%;
+    height: 100%;
+
+    background-color: var(--color-primary);
+    border-radius: 999px;
+}
+
+.player-bar-thumb {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(50%, -50%);
+
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+
+    background-color: var(--color-primary);
 }
