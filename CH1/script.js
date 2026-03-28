@@ -14,6 +14,9 @@ const playerProgress = document.querySelector(".player-bar-progress");
 const playerTitle = document.querySelector(".player-title");
 const playerSubtitle = document.querySelector(".player-subtitle");
 
+const playerStart = document.querySelector(".player-start");
+const playerEnd = document.querySelector(".player-end");
+
 // ========================
 // STATE
 // ========================
@@ -33,6 +36,15 @@ function updatePlayerText(card) {
 
     if (playerSubtitle) {
         playerSubtitle.textContent = card.dataset.subtitle || "";
+    }
+
+    if (playerStart) {
+        playerStart.textContent = card.dataset.date || "";
+    }
+
+    if (playerEnd && cards.length > 0) {
+        const lastCard = cards[cards.length - 1];
+        playerEnd.textContent = lastCard.dataset.date || "";
     }
 }
 
