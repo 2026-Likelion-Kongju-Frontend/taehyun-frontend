@@ -236,11 +236,14 @@ img {
 
 /* ================ Timeline Section =============== */
 
-.timeline-sticky {
-    position: sticky;
-    top: 0;
-    height: 100vh;
+.timeline {
+    min-height: 100vh;
+    position: relative;
+}
 
+.timeline-sticky {
+    position: relative;
+    height: 100vh;
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -251,7 +254,56 @@ img {
     gap: 40px;
     padding: 0 32px;
     will-change: transform;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
+}
+
+.timeline-ui {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    z-index: 20;
+    pointer-events: none;
+}
+
+.timeline-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
+
+    width: 48px;
+    height: 48px;
+    border: 1px solid #2a2a2a;
+    border-radius: 50%;
+
+    background-color: rgba(15, 15, 15, 0.75);
+    color: var(--color-text);
+    font-size: 1.2rem;
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+.timeline-nav:disabled {
+    opacity: 0.3;
+    cursor: default;
+    border-color: #2a2a2a;
+    color: var(--color-subtext);
+}
+
+.timeline-prev {
+    left: 16px;
+}
+
+.timeline-next {
+    right: 16px;
+}
+
+.timeline-nav:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
 }
 
 .project-card {
@@ -493,4 +545,64 @@ img {
 
 .player-bar-thumb:hover {
     transform: translate(-50%, -50%) scale(1.2);
+}
+
+.player-top-row {
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.player-info {
+    min-width: 0;
+    text-align: center;
+}
+
+.player-nav {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.player-nav:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.player-nav:disabled {
+    opacity: 0.25;
+    cursor: default;
+    transform: none;
+}
+
+/* 삼각형 기본 */
+.player-nav span {
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+}
+
+/* 이전 버튼 << */
+.player-prev span {
+    border-right: 14px solid rgba(245, 245, 245, 0.9);
+}
+
+/* 다음 버튼 >> */
+.player-next span {
+    border-left: 14px solid rgba(245, 245, 245, 0.9);
 }
