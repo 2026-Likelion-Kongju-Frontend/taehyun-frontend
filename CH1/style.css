@@ -236,10 +236,6 @@ img {
 
 /* ================ Timeline Section =============== */
 
-.timeline {
-    height: 300vh;
-}
-
 .timeline-sticky {
     position: sticky;
     top: 0;
@@ -252,9 +248,10 @@ img {
 
 .timeline-track {
     display: flex;
-    gap: 24px;
+    gap: 40px;
     padding: 0 32px;
     will-change: transform;
+    transition: transform 0.3s ease;
 }
 
 .project-card {
@@ -401,18 +398,69 @@ img {
 /* ================ PLAYER BAR =============== */
 
 #player-bar {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+#player-bar.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    pointer-events: auto;
+}
+
+#player-bar {
     position: fixed;
-    bottom: 24px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
 
-    width: min(720px, calc(100% - 48px));
+    width: min(720px, calc(100% - 32px));
+    padding: 14px 18px 12px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    background-color: rgba(18, 18, 18, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.player-info {
+    margin-bottom: 10px;
+}
+
+.player-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.2;
+    margin-bottom: 2px;
+}
+
+.player-subtitle {
+    font-size: 0.78rem;
+    color: var(--color-subtext);
+    line-height: 1.4;
+}
+
+.player-progress-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+}
+
+.player-time {
+    font-size: 0.75rem;
+    color: var(--color-subtext);
+    white-space: nowrap;
 }
 
 .player-bar-track {
     width: 100%;
-    height: 4px;
+    height: 6px;
 
     background-color: #1f1f1f;
     border-radius: 999px;
@@ -431,12 +479,18 @@ img {
 .player-bar-thumb {
     position: absolute;
     top: 50%;
-    right: 0;
-    transform: translate(50%, -50%);
+    left: 100%;
+    transform: translate(-50%, -50%);
 
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
 
     background-color: var(--color-primary);
+
+    transition: transform 0.2s ease;
+}
+
+.player-bar-thumb:hover {
+    transform: translate(-50%, -50%) scale(1.2);
 }
