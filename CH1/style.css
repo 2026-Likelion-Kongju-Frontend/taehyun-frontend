@@ -139,10 +139,44 @@ img {
     color: var(--color-subtext);
 }
 
-.hero-buttons {
+.hero-links {
     display: flex;
-    gap: 16px;
+    align-items: center;
+    gap: 12px;
     margin-top: 28px;
+}
+
+.hero-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+/* 이메일 (텍스트) */
+.hero-email {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    letter-spacing: 0.02em;
+}
+
+/* GitHub 링크 */
+.hero-link {
+    font-size: 0.95rem;
+    color: var(--color-subtext);
+    transition: color 0.2s ease;
+}
+
+.hero-link:hover {
+    color: var(--color-primary);
+}
+
+.hero-divider {
+    color: #444;
 }
 
 .hero-image img {
