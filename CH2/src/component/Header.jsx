@@ -1,21 +1,21 @@
 import styles from './Header.module.css'
 import alarm from '../../public/alarm.png'
+
 function Header() {
     return (
         <header className={styles.header}>
             <div className={styles.logo}>LOGO</div>
 
             <div className={styles.right}>
-                <div className={styles.alarm}>
-                    <img src={alarm} alt="Alarm" />
-                </div>
+                <button className={styles.alarmBtn}>
+                    <img src={alarm} alt="알림" className={styles.alarmIcon} />
+                </button>
 
-                <div className={styles.username}>Username</div>
-                <div className={styles.logout}>Logout</div>
+                <span className={styles.username}>전태현</span>
+                <button className={styles.logout}>로그아웃</button>
             </div>
-
         </header>
     )
 }
 
-export default Header;
+export default Header
