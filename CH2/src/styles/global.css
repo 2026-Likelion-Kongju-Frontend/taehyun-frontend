@@ -1,0 +1,18 @@
+:root {
+  --bg: #eff1f0;
+  --header-bg: #F8F8F8;
+  --primary-500: #49684A;
+  --primary-300: #2F8000;
+  --text-primary: #000000;
+  --text-secondary: #7E7E7E;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
