@@ -1,5 +1,5 @@
 import styles from './Header.module.css'
-import alarm from '../../public/alarm.png'
+import alarm from '../assets/alarm.png'
 
 function Header() {
     return (

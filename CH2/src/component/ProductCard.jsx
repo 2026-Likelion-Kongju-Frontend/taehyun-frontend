@@ -1,14 +1,10 @@
 import { useState } from 'react'
 import styles from './ProductCard.module.css'
-import heartImg from '../../public/Heart.png'
-import heartActiveImg from '../../public/Heart_active.png'
+import heartImg from '../assets/Heart.png'
+import heartActiveImg from '../assets/Heart_active.png'
 
-function ProductCard({ image, brand, name, price, discount }) {
-    const [liked, setLiked] = useState(false)
-
-    const discountedPrice = discount
-        ? Math.round(price * (1 - discount / 100))
-        : null
+function ProductCard({ image, brand, name, price, discountRate, isLiked }) {
+    const [liked, setLiked] = useState(isLiked)
 
     return (
         <div className={styles.card}>
@@ -34,11 +30,11 @@ function ProductCard({ image, brand, name, price, discount }) {
                 <div className={styles.name}>{name}</div>
 
                 <div className={styles.priceRow}>
-                    {discount && (
-                        <span className={styles.discount}>{discount}%</span>
+                    {discountRate && (
+                        <span className={styles.discount}>{discountRate}%</span>
                     )}
                     <span className={styles.price}>
-                        {(discountedPrice ?? price).toLocaleString()}
+                        {price.toLocaleString()}
                     </span>
                 </div>
             </div>
