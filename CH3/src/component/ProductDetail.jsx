@@ -9,20 +9,43 @@ function ProductDetail() {
     const { id } = useParams()
     const product = products.find((p) => p.id === Number(id))
 
-    const [selectedSize, setSelectedSize] = useState(null)
+    const [selectedItems, setSelectedItems] = useState([])
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
     const handleSelectSize = (size) => {
-        setSelectedSize(size)
         setIsDropdownOpen(false)
+        if (selectedItems.some((item) => item.size === size)) return
+        setSelectedItems((prev) => [...prev, { size, quantity: 1 }])
     }
 
-    const handleRemoveSize = () => {
-        setSelectedSize(null)
+    const handleRemoveSize = (size) => {
+        setSelectedItems((prev) => prev.filter((item) => item.size !== size))
     }
+
+    const handleDecrease = (size) => {
+        setSelectedItems((prev) =>
+            prev.map((item) =>
+                item.size === size
+                    ? { ...item, quantity: Math.max(1, item.quantity - 1) }
+                    : item
+            )
+        )
+    }
+
+    const handleIncrease = (size) => {
+        setSelectedItems((prev) =>
+            prev.map((item) =>
+                item.size === size
+                    ? { ...item, quantity: Math.min(9, item.quantity + 1) }
+                    : item
+            )
+        )
+    }
+
+    const totalQuantity = selectedItems.reduce((sum, item) => sum + item.quantity, 0)
 
     const handleAddToCart = () => {
-        if (!selectedSize) {
+        if (selectedItems.length === 0) {
             alert('사이즈를 선택해 주세요.')
             return
         }
@@ -128,34 +151,50 @@ function ProductDetail() {
                     </ul>
                 )}
 
-                {selectedSize && (
+                {selectedItems.length > 0 && (
                     <div className={styles.selectedBox}>
-                        <div className={styles.selectedHeader}>
-                            <span className={styles.selectedSize}>{selectedSize}</span>
-                            <button
-                                className={styles.removeBtn}
-                                onClick={handleRemoveSize}
-                            >
-                                ×
-                            </button>
-                        </div>
-                        <div className={styles.selectedDate}>03.26 (목) 도착 예정</div>
+                        {selectedItems.map((item) => (
+                            <div key={item.size} className={styles.selectedItem}>
+                                <div className={styles.selectedHeader}>
+                                    <span className={styles.selectedSize}>{item.size}</span>
+                                    <button
+                                        className={styles.removeBtn}
+                                        onClick={() => handleRemoveSize(item.size)}
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+                                <div className={styles.selectedDate}>03.26 (목) 도착 예정</div>
 
-                        <div className={styles.quantityRow}>
-                            <div className={styles.quantityControl}>
-                                <button className={styles.quantityBtn}>-</button>
-                                <span className={styles.quantityValue}>1</span>
-                                <button className={styles.quantityBtn}>+</button>
+                                <div className={styles.quantityRow}>
+                                    <div className={styles.quantityControl}>
+                                        <button
+                                            className={styles.quantityBtn}
+                                            onClick={() => handleDecrease(item.size)}
+                                            disabled={item.quantity === 1}
+                                        >
+                                            -
+                                        </button>
+                                        <span className={styles.quantityValue}>{item.quantity}</span>
+                                        <button
+                                            className={styles.quantityBtn}
+                                            onClick={() => handleIncrease(item.size)}
+                                            disabled={item.quantity === 9}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                    <span className={styles.itemPrice}>
+                                        {(product.price * item.quantity).toLocaleString()}
+                                    </span>
+                                </div>
                             </div>
-                            <span className={styles.itemPrice}>
-                                {product.price.toLocaleString()}
-                            </span>
-                        </div>
+                        ))}
 
                         <div className={styles.totalRow}>
-                            <span className={styles.totalLabel}>총 1개</span>
+                            <span className={styles.totalLabel}>총 {totalQuantity}개</span>
                             <span className={styles.totalPrice}>
-                                {product.price.toLocaleString()}
+                                {(product.price * totalQuantity).toLocaleString()}
                             </span>
                         </div>
                     </div>

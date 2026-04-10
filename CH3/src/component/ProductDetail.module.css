@@ -235,7 +235,20 @@
     border-radius: 4px;
     display: flex;
     flex-direction: column;
+    gap: 12px;
+}
+
+.selectedItem {
+    display: flex;
+    flex-direction: column;
     gap: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--bg);
+}
+
+.selectedItem:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
 .selectedHeader {
@@ -288,6 +301,11 @@
     font-size: 16px;
     color: var(--text-primary);
     cursor: pointer;
+}
+
+.quantityBtn:disabled {
+    color: var(--text-secondary);
+    cursor: not-allowed;
 }
 
 .quantityValue {
