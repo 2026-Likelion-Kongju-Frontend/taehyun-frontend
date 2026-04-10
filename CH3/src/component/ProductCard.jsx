@@ -1,13 +1,19 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import styles from './ProductCard.module.css'
 import heartImg from '../assets/Heart.png'
 import heartActiveImg from '../assets/Heart_active.png'
 
-function ProductCard({ image, brand, name, price, discountRate, isLiked }) {
+function ProductCard({ id, image, brand, name, price, discountRate, isLiked }) {
     const [liked, setLiked] = useState(isLiked)
 
+    const handleHeartClick = (e) => {
+        e.preventDefault()
+        setLiked(!liked)
+    }
+
     return (
-        <div className={styles.card}>
+        <Link to={`/product/${id}`} className={styles.card}>
             <div className={styles.imageWrapper}>
                 <img src={image} alt={name} className={styles.image} />
             </div>
@@ -17,7 +23,7 @@ function ProductCard({ image, brand, name, price, discountRate, isLiked }) {
                     <span className={styles.brand}>{brand}</span>
                     <button
                         className={styles.heartBtn}
-                        onClick={() => setLiked(!liked)}
+                        onClick={handleHeartClick}
                     >
                         <img
                             src={liked ? heartActiveImg : heartImg}
@@ -30,7 +36,7 @@ function ProductCard({ image, brand, name, price, discountRate, isLiked }) {
                 <div className={styles.name}>{name}</div>
 
                 <div className={styles.priceRow}>
-                    {discountRate && (
+                    {discountRate > 0 && (
                         <span className={styles.discount}>{discountRate}%</span>
                     )}
                     <span className={styles.price}>
@@ -38,7 +44,7 @@ function ProductCard({ image, brand, name, price, discountRate, isLiked }) {
                     </span>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 

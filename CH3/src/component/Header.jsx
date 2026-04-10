@@ -1,10 +1,11 @@
+import { Link } from 'react-router-dom'
 import styles from './Header.module.css'
 import alarm from '../assets/alarm.png'
 
 function Header() {
     return (
         <header className={styles.header}>
-            <div className={styles.logo}>LOGO</div>
+            <Link to="/" className={styles.logo}>LOGO</Link>
 
             <div className={styles.right}>
                 <button className={styles.alarmBtn}>
