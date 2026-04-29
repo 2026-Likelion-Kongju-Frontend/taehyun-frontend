@@ -1,0 +1,23 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap");
+
+:root {
+  --bg: #eff1f0;
+  --header-bg: #F8F8F8;
+  --primary-500: #49684A;
+  --primary-300: #2F8000;
+  --text-primary: #000000;
+  --text-secondary: #7E7E7E;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Pretendard", sans-serif;
+  padding-top: 64px;
+}
