@@ -2,21 +2,40 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./ProductDetail.module.css";
 import heartImg from "../assets/Heart.png";
+import heartActiveImg from "../assets/Heart_active.png";
 import starImg from "../assets/star.svg";
-import { getProductById } from "../api/products";
+import { getProductById, toggleProductLike } from "../api/products";
+import { addCartItem } from "../api/cart";
 
 function ProductDetail() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-
-  useEffect(() => {
-    getProductById(id).then((response) => {
-      setProduct(response.data);
-    });
-  }, [id]);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLiking, setIsLiking] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setIsLoading(true);
+        setErrorMessage("");
+        const data = await getProductById(id);
+        setProduct(data);
+        setSelectedItems([]);
+        setIsDropdownOpen(false);
+      } catch {
+        setErrorMessage("상품 정보를 불러오지 못했습니다.");
+        setProduct(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
 
   const handleSelectSize = (size) => {
     setIsDropdownOpen(false);
@@ -53,37 +72,61 @@ function ProductDetail() {
     0,
   );
 
-  const handleAddToCart = () => {
+  const handleToggleLike = async () => {
+    if (!product || isLiking) return;
+
+    setIsLiking(true);
+    const previousLiked = product.isLiked;
+    setProduct((prev) => ({ ...prev, isLiked: !prev.isLiked }));
+
+    try {
+      const result = await toggleProductLike(Number(id));
+      if (typeof result?.isLiked === "boolean") {
+        setProduct((prev) => ({ ...prev, isLiked: result.isLiked }));
+      }
+    } catch {
+      setProduct((prev) => ({ ...prev, isLiked: previousLiked }));
+      alert("좋아요 처리 중 오류가 발생했습니다.");
+    } finally {
+      setIsLiking(false);
+    }
+  };
+
+  const handleAddToCart = async () => {
     if (selectedItems.length === 0) {
       alert("사이즈를 선택해 주세요.");
       return;
     }
 
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-    selectedItems.forEach((item) => {
-      const existingIndex = cart.findIndex(
-        (entry) => entry.name === product.name && entry.size === item.size,
+    try {
+      setIsAddingToCart(true);
+      await Promise.all(
+        selectedItems.map((item) =>
+          addCartItem({
+            productId: Number(id),
+            size: item.size,
+            quantity: item.quantity,
+          }),
+        ),
       );
-      if (existingIndex >= 0) {
-        cart[existingIndex].quantity = Math.min(
-          9,
-          cart[existingIndex].quantity + item.quantity,
-        );
-      } else {
-        cart.push({
-          name: product.name,
-          price: product.price,
-          size: item.size,
-          quantity: item.quantity,
-        });
-      }
-    });
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    alert("장바구니에 담겼습니다.");
-    setSelectedItems([]);
+      alert("장바구니에 담겼습니다.");
+      setSelectedItems([]);
+    } catch {
+      alert("장바구니 담기에 실패했습니다.");
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <section className={styles.notFound}>상품 정보를 불러오는 중입니다.</section>
+    );
+  }
+
+  if (errorMessage) {
+    return <section className={styles.notFound}>{errorMessage}</section>;
+  }
 
   if (!product) {
     return (
@@ -164,8 +207,16 @@ function ProductDetail() {
             <span className={styles.discount}>{product.discountRate}%</span>
           )}
           <span className={styles.price}>{product.price.toLocaleString()}</span>
-          <button className={styles.heartBtn}>
-            <img src={heartImg} alt="좋아요" className={styles.heartIcon} />
+          <button
+            className={styles.heartBtn}
+            onClick={handleToggleLike}
+            disabled={isLiking}
+          >
+            <img
+              src={product.isLiked ? heartActiveImg : heartImg}
+              alt="좋아요"
+              className={styles.heartIcon}
+            />
           </button>
         </div>
 
@@ -243,8 +294,12 @@ function ProductDetail() {
         )}
 
         <div className={styles.buttonRow}>
-          <button className={styles.cartBtn} onClick={handleAddToCart}>
-            장바구니
+          <button
+            className={styles.cartBtn}
+            onClick={handleAddToCart}
+            disabled={isAddingToCart}
+          >
+            {isAddingToCart ? "담는 중..." : "장바구니"}
           </button>
           <button className={styles.buyBtn}>구매하기</button>
         </div>

@@ -4,12 +4,19 @@ import styles from './ProductCard.module.css'
 import heartImg from '../assets/Heart.png'
 import heartActiveImg from '../assets/Heart_active.png'
 
-function ProductCard({ id, image, brand, name, price, discountRate, isLiked }) {
-    const [liked, setLiked] = useState(isLiked)
+function ProductCard({ id, image, brand, name, price, discountRate, isLiked, onToggleLike }) {
+    const [isLiking, setIsLiking] = useState(false)
 
-    const handleHeartClick = (e) => {
+    const handleHeartClick = async (e) => {
         e.preventDefault()
-        setLiked(!liked)
+        if (isLiking) return
+
+        setIsLiking(true)
+        try {
+            await onToggleLike?.(id)
+        } finally {
+            setIsLiking(false)
+        }
     }
 
     return (
@@ -24,9 +31,10 @@ function ProductCard({ id, image, brand, name, price, discountRate, isLiked }) {
                     <button
                         className={styles.heartBtn}
                         onClick={handleHeartClick}
+                        disabled={isLiking}
                     >
                         <img
-                            src={liked ? heartActiveImg : heartImg}
+                            src={isLiked ? heartActiveImg : heartImg}
                             alt="좋아요"
                             className={styles.heartIcon}
                         />

@@ -1,8 +1,23 @@
 import axios from "axios";
 
+const API_BASE_URL = (
+  import.meta.env.VITE_API_BASE_URL || "https://shopping-api-server.onrender.com"
+).replace(/\/+$/, "");
+
 const client = axios.create({
-  baseURL: "https://shopping-api-server.onrender.com",
+  baseURL: API_BASE_URL,
   timeout: 10000,
+  withCredentials: true,
 });
+
+export const buildImageUrl = (imagePath) => {
+  if (!imagePath) return "";
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+    return imagePath;
+  }
+
+  const normalizedPath = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;
+  return `${API_BASE_URL}${normalizedPath}`;
+};
 
 export default client;
