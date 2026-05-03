@@ -5,17 +5,17 @@ import heartImg from '../assets/Heart.png'
 import heartActiveImg from '../assets/Heart_active.png'
 
 function ProductCard({ id, image, brand, name, price, discountRate, isLiked, onToggleLike }) {
-    const [isLiking, setIsLiking] = useState(false)
+    const [isToggling, setIsToggling] = useState(false)
 
     const handleHeartClick = async (e) => {
         e.preventDefault()
-        if (isLiking) return
+        if (isToggling) return
 
-        setIsLiking(true)
+        setIsToggling(true)
         try {
             await onToggleLike?.(id)
         } finally {
-            setIsLiking(false)
+            setIsToggling(false)
         }
     }
 
@@ -31,7 +31,7 @@ function ProductCard({ id, image, brand, name, price, discountRate, isLiked, onT
                     <button
                         className={styles.heartBtn}
                         onClick={handleHeartClick}
-                        disabled={isLiking}
+                        disabled={isToggling}
                     >
                         <img
                             src={isLiked ? heartActiveImg : heartImg}

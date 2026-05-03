@@ -12,7 +12,7 @@ function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isLiking, setIsLiking] = useState(false);
+  const [isToggling, setIsToggling] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -73,22 +73,25 @@ function ProductDetail() {
   );
 
   const handleToggleLike = async () => {
-    if (!product || isLiking) return;
+    if (!product || isToggling) return;
 
-    setIsLiking(true);
+    setIsToggling(true);
     const previousLiked = product.isLiked;
     setProduct((prev) => ({ ...prev, isLiked: !prev.isLiked }));
 
     try {
       const result = await toggleProductLike(Number(id));
-      if (typeof result?.isLiked === "boolean") {
-        setProduct((prev) => ({ ...prev, isLiked: result.isLiked }));
+      if (Array.isArray(result?.likedProductIds)) {
+        setProduct((prev) => ({
+          ...prev,
+          isLiked: result.likedProductIds.includes(prev.id),
+        }));
       }
     } catch {
       setProduct((prev) => ({ ...prev, isLiked: previousLiked }));
       alert("좋아요 처리 중 오류가 발생했습니다.");
     } finally {
-      setIsLiking(false);
+      setIsToggling(false);
     }
   };
 
@@ -210,7 +213,7 @@ function ProductDetail() {
           <button
             className={styles.heartBtn}
             onClick={handleToggleLike}
-            disabled={isLiking}
+            disabled={isToggling}
           >
             <img
               src={product.isLiked ? heartActiveImg : heartImg}

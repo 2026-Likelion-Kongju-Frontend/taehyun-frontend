@@ -37,13 +37,13 @@ function ProductList() {
 
     try {
       const result = await toggleProductLike(productId);
-      if (typeof result?.isLiked === "boolean") {
+      if (Array.isArray(result?.likedProductIds)) {
+        const likedSet = new Set(result.likedProductIds);
         setProducts((prev) =>
-          prev.map((product) =>
-            product.id === productId
-              ? { ...product, isLiked: result.isLiked }
-              : product,
-          ),
+          prev.map((product) => ({
+            ...product,
+            isLiked: likedSet.has(product.id),
+          })),
         );
       }
     } catch {
