@@ -26,7 +26,7 @@ function ProductList() {
   }, []);
 
   const handleToggleLike = async (productId) => {
-    const previousProducts = products;
+    const previousProducts = [...products];
     setProducts((prev) =>
       prev.map((product) =>
         product.id === productId
@@ -52,6 +52,22 @@ function ProductList() {
     }
   };
 
+  if (isLoading) {
+    return (
+      <section className={styles.section}>
+        <p>상품 목록을 불러오는 중입니다.</p>
+      </section>
+    );
+  }
+
+  if (errorMessage) {
+    return (
+      <section className={styles.section}>
+        <p>{errorMessage}</p>
+      </section>
+    );
+  }
+
   return (
     <section className={styles.section}>
       <h2 className={styles.title}>
@@ -59,17 +75,13 @@ function ProductList() {
       </h2>
 
       <div className={styles.grid}>
-        {isLoading && <p>상품 목록을 불러오는 중입니다.</p>}
-        {!isLoading && errorMessage && <p>{errorMessage}</p>}
-        {!isLoading &&
-          !errorMessage &&
-          products.map((product) => (
-            <ProductCard
-              key={product.id}
-              {...product}
-              onToggleLike={handleToggleLike}
-            />
-          ))}
+        {products.map((product) => (
+          <ProductCard
+            key={product.id}
+            {...product}
+            onToggleLike={handleToggleLike}
+          />
+        ))}
       </div>
     </section>
   );
